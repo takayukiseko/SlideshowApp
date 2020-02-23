@@ -50,6 +50,8 @@ class ViewController: UIViewController {
         self.timer.invalidate()
             self.timer = nil
             label.setTitle("再生", for: UIControl.State.normal)
+            labelback.isEnabled = true
+            labelnext.isEnabled = true
         }
     }
     var timer: Timer!
