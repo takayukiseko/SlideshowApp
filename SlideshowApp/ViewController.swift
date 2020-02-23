@@ -10,9 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
-    
+    //再生停止
     @IBOutlet weak var label: UIButton!
-    
+    //戻るばボタン
+    @IBOutlet weak var labelback: UIButton!
+    //進むボタン
+    @IBOutlet weak var labelnext: UIButton!
     //遷移させる
     
     
@@ -43,6 +46,11 @@ class ViewController: UIViewController {
     //画像
       //画像の上のボタンをtap
     @IBAction func tap(_ sender: Any) {
+        if self.timer != nil{
+        self.timer.invalidate()
+            self.timer = nil
+            label.setTitle("再生", for: UIControl.State.normal)
+        }
     }
     var timer: Timer!
     
@@ -65,8 +73,11 @@ class ViewController: UIViewController {
 
         // Image Viewに読み込んだ画像をセット
         imageView.image = image
+        //再生状態にタップされたらて自動送りを停止させる
+        //if self.timer != nil{
+        //self.timer.invalidate()
         
-        
+        //}
     }
 
     
@@ -98,27 +109,36 @@ class ViewController: UIViewController {
 //戻るボタン
     @IBAction func backButtonAction(_ sender: Any) {
         if self.timer == nil {
-            if dispImageNo == 0 {
+                 if dispImageNo == 0 {
                     dispImageNo = 2
                 } else {
                     dispImageNo -= 1
                 }
             displayImage()
+         
             }
+        
         }
         
 ///再生停止ボタン
     @IBAction func repaeatstopButtonAction(_ sender: Any) {
         //再生を押す
          if self.timer == nil {
-            self.timer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector:#selector(onTimer(_:)), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector:#selector(onTimer(_:)), userInfo: nil, repeats: true)
             label.setTitle("停止", for: UIControl.State.normal)
+            //再生状態において、戻る、進むボタンを無効に
+            labelback.isEnabled = false
+            labelnext.isEnabled = false
+            
          }
          // タイマーを停止する
          else if self.timer != nil{
            self.timer.invalidate()
            self.timer = nil
              label.setTitle("再生", for: UIControl.State.normal)
+            //停止状態において、進む、戻るボタンを有効に
+             labelback.isEnabled = true
+            labelnext.isEnabled = true
          }
         
        // Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: //#selector(onTimer(_:)), userInfo: nil, repeats: true)
